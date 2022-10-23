@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { v4 as uuid } from 'uuid';
 
 const Context = React.createContext(null);
 
@@ -11,53 +12,46 @@ const Context = React.createContext(null);
 //   };
 
 const ProviderWrapper = (props) => {
-  const [opinion, setOpinion] = useState(0);
-  const [all, setAll] = useState(0);
-
-  const increaseOpinion = (opinion) => {
-    setOpinion(opinion + 1);
-    setAll(all + 1);
-  };
-
-  const resetAll = () => {
-    setOpinion(0);
-    setAll(0);
-  };
-
-  return (
-    <Context.Provider
-      value={{
-        opinion,
-        all,
-        increaseOpinion,
-        resetAll,
-      }}
-    >
-      {props.children}
-    </Context.Provider>
-  );
-}
-
+  const [opinions, setOpinions] = useState([]);
+  const [newOpinion, setNewOpinion] = useState('');
   
+  //const [all, setAll] = useState(0);
+
+
+  const increaseOpinion = (opinion) => {    const id = opinion.target.value; // recup l'id
+    // pas sur que ca marche; a testinions[{
+    id}] + 1 Oet.value) //recup l'id
+
+    setOpinions(...opinions, {id} : opinions[{id}] + 1);tOpinion(opinion + 1);
+  };
+
+  const addOpinion = (event) => {
+    event.preventDefault()
+    const opinionObject = {
+      id: uuid(),
+      opinion: newOpinion
+    }
+    setOpinions(opinions?.concat(opinionObject))
+    setNewOpinion('');  
+  }
+  
+
+  const reset = () => {
+    setOpinions(0);
   };
 
   return (
     <Context.Provider
       value={{
-        good,
-        ok,
-        bad,
-        all,
-        increaseGood,
-        increaseOk,
-        increaseBad,
-        resetAll,
+        opinions,
+        increaseOpinion,
+        reset,
       }}
     >
       {props.children}
     </Context.Provider>
   );
-}
+
   // const exposedValue = {
   //   language,
   //   pickLanguage,
@@ -66,4 +60,5 @@ const ProviderWrapper = (props) => {
   // return (
   //   <Context.Provider value={exposedValue}>{props.children}</Context.Provider>
   // );
+    }
 export { Context, ProviderWrapper };
